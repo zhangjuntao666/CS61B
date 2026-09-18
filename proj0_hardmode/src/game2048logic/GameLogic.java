@@ -19,18 +19,53 @@ public class GameLogic {
         // fill this in
         int sizeOfBoard = board[0].length; //获取board的行数或列数
 
+        merge(board, side); //此后的board是经历过merge之后的board
         if (side == Side.NORTH) {
             // Don't you dare try to write all of your
             // code in this method. You will want to write
             // helper methods. And those helper methods should
             // have helper methods.
-
+            /*由于Java不能直接提取某一列，所以我必须要遍历每一列，存到col里，然后对col执行move,然后再把move后的col存回去*/
+            for (int j=0; j<sizeOfBoard; j++) {
+                int[] col = new int[sizeOfBoard];
+                for (int i=0; i<sizeOfBoard; i++) {
+                    col[i] = board[i][j];
+                }
+                if (!judge0(col)) {
+                    moveForward(col);
+                }
+                for (int i=0; i<sizeOfBoard; i++) {
+                    board[i][j] = col[i];
+                }
+            }
             return;
         } else if (side == Side.EAST) {
+            for (int i=0; i<sizeOfBoard; i++) {
+                if (!judge0(board[i])) {
+                    moveBackward(board[i]);
+                }
+            }
             return;
         } else if (side == Side.WEST) {
+            for (int i=0; i<sizeOfBoard; i++) {
+                if (!judge0(board[i])) {
+                    moveForward(board[i]);
+                }
+            }
             return;
         } else { // SOUTH
+            for (int j=0; j<sizeOfBoard; j++) {
+                int[] col = new int[sizeOfBoard];
+                for (int i=0; i<sizeOfBoard; i++) {
+                    col[i] = board[i][j];
+                }
+                if (!judge0(col)) {
+                    moveBackward(col);
+                }
+                for (int i=0; i<sizeOfBoard; i++) {
+                    board[i][j] = col[i];
+                }
+            }
             return;
         }
     }
