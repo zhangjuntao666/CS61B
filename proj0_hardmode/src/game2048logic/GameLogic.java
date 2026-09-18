@@ -74,38 +74,59 @@ public class GameLogic {
     public static int[][] merge(int[][] board, Side side) {
         int sizeOfBoard = board[0].length; //获取board的行数或列数
         if (side == Side.NORTH) {
-            for (int j=0; j<sizeOfBoard; j++) {
+            for (int j=0; j<sizeOfBoard; j++) { //finished
                 for (int i=0; i<sizeOfBoard-1; i++) {
-                    if (board[i][j] == board[i+1][j]) {
-                        board[i][j] *= 2;
-                        board[i+1][j] = 0;
+                    for (int k=i+1; k<sizeOfBoard; k++) {
+                        if (board[k][j] != 0) {
+                            if (board[i][j] == board[k][j]) {
+                                board[i][j] *= 2;
+                                board[k][j] = 0;
+                            }
+                            break;
+                        }
                     }
                 }
             }
-        } else if (side == Side.EAST) {
+        } else if (side == Side.EAST) { //unfinished
             for (int i=0; i<sizeOfBoard; i++) {
                 for (int j=sizeOfBoard-1; j>=1; j--) {
-                    if (board[i][j] == board[i][j-1]) {
-                        board[i][j] *=2;
-                        board[i][j-1] = 0;
+                    for (int k=j-1; k>=0; k--) {
+                        if (board[i][k]!=0) {
+                            if (board[i][j] == board[i][k]) {
+                                board[i][j] *=2;
+                                board[i][k] = 0;
+                            }
+                            break;
+                        }
                     }
+
                 }
             }
-        } else if (side == Side.WEST) {
+        } else if (side == Side.WEST) { //finished
             for (int i=0; i<sizeOfBoard; i++) {
                 for (int j=0; j<sizeOfBoard-1; j++) {
-                    if (board[i][j] == board[i][j+1]) {
-                        board[i][j] *= 2;
-                        board[i][j+1] = 0;
+                    for (int k=j+1; k<sizeOfBoard; k++) {
+                        if (board[i][k]!=0) {
+                            if (board[i][j] == board[i][k]) {
+                                board[i][j] *= 2;
+                                board[i][k] = 0;
+                            }
+                            break;
+                        }
                     }
                 }
             }
         } else {
-            for (int j=0; j<sizeOfBoard; j++) {
+            for (int j=0; j<sizeOfBoard; j++) { //unfinished
                 for (int i=sizeOfBoard-1; i>=1; i--) {
-                    if (board[i][j] == board[i-1][j]) {
-                        board[i][j] *= 2;
-                        board[i-1][j] = 0;
+                    for (int k=i-1; k>=0; k--) {
+                        if (board[k][j]!=0) {
+                            if (board[i][j] == board[k][j]) {
+                                board[i][j] *= 2;
+                                board[k][j] = 0;
+                            }
+                            break;
+                        }
                     }
                 }
             }
