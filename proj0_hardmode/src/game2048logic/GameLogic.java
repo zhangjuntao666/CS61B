@@ -39,9 +39,23 @@ public class GameLogic {
     public static int[][] merge(int[][] board, Side side) {
         int sizeOfBoard = board[0].length; //获取board的行数或列数
         if (side == Side.NORTH) {
-
+            for (int j=0; j<sizeOfBoard; j++) {
+                for (int i=0; i<sizeOfBoard-1; i++) {
+                    if (board[i][j] == board[i+1][j]) {
+                        board[i][j] *= 2;
+                        board[i+1][j] = 0;
+                    }
+                }
+            }
         } else if (side == Side.EAST) {
-
+            for (int i=0; i<sizeOfBoard; i++) {
+                for (int j=sizeOfBoard-1; j>=1; j--) {
+                    if (board[i][j] == board[i][j-1]) {
+                        board[i][j] *=2;
+                        board[i][j-1] = 0;
+                    }
+                }
+            }
         } else if (side == Side.WEST) {
             for (int i=0; i<sizeOfBoard; i++) {
                 for (int j=0; j<sizeOfBoard-1; j++) {
@@ -52,7 +66,14 @@ public class GameLogic {
                 }
             }
         } else {
-
+            for (int j=0; j<sizeOfBoard; j++) {
+                for (int i=sizeOfBoard-1; i>=1; i--) {
+                    if (board[i][j] == board[i-1][j]) {
+                        board[i][j] *= 2;
+                        board[i-1][j] = 0;
+                    }
+                }
+            }
         }
         return board;
     }
