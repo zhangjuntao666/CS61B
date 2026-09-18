@@ -54,5 +54,46 @@ public class GameLogic {
         } else {
 
         }
+        return board;
+    }
+
+    /*judge0的作用是判断某一个int[]是否全为0，全0返回true，不需要再进行move的操作。如果返回值是false，则需要进一步执行count0或count0rev，*/
+    public static boolean judge0(int[] list) {
+        for (int i=0; i<list.length; i++) {
+            if (list[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /*moveForward的作用是把一个非零的数组中的所有非零项往前面移，指导前面全是非零项，后面全是0。用于NORTH和WEST*/
+    public static int[] moveForward(int[] list) {//目前的想法是从左到右依次进行，对于每一个
+        int currentIndex = 0;
+        for (int i=0; i<list.length; i++) {
+            if (list[i] != 0 && i != currentIndex) {
+                list[currentIndex] = list[i];
+                list[i] = 0;
+                currentIndex ++;
+            } else if (list[i] != 0 && i == currentIndex) {
+                currentIndex ++;
+            }
+        }
+        return list;
+    }
+
+    /*moveBackward的作用和moveForward差不多，不过是把数组的非零元素往后移。用于SOUTH和EAST*/
+    public static int[] moveBackward(int[] list) {
+        int currentIndex = list.length-1;
+        for (int i=list.length-1; i>=0; i--) {
+            if (list[i] != 0 && i != currentIndex) {
+                list[currentIndex] = list[i];
+                list[i] = 0;
+                currentIndex --;
+            } else if (list[i] != 0 && i == currentIndex) {
+                currentIndex --;
+            }
+        }
+        return list;
     }
 }
