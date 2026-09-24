@@ -78,4 +78,38 @@ public class LinkedListDeque61BTest {
         lld.addLast("2");
         assertThat(lld.size()).isEqualTo(2);
     }
+
+    @Test
+    public void testRemoveFirst1() {
+        Deque61B<String> lld = new LinkedListDeque61B<>();
+        assertThat(lld.removeFirst()).isEqualTo(null);
+    }
+
+    @Test
+    public void testRemoveFirst2() {
+        Deque61B<Integer> lld = new LinkedListDeque61B<>();
+        lld.addFirst(2);
+        lld.addFirst(1);
+        lld.addLast(3);
+        assertThat(lld.removeFirst()).isEqualTo(1);
+        assertThat(lld.size()).isEqualTo(2);
+        assertThat(lld.toList()).containsExactly(2,3).inOrder();
+    }
+
+    @Test
+    public void testRemoveLast1() {
+        Deque61B<String> lld = new LinkedListDeque61B<>();
+        assertThat(lld.removeLast()).isEqualTo(null);
+    }
+
+    @Test
+    public void testRemoveLast2() {
+        Deque61B<Integer> lld = new LinkedListDeque61B<>();
+        lld.addFirst(2);
+        lld.addFirst(1);
+        lld.addLast(3);
+        assertThat(lld.removeLast()).isEqualTo(3);
+        assertThat(lld.size()).isEqualTo(2);
+        assertThat(lld.toList()).containsExactly(1,2).inOrder();
+    }
 }
