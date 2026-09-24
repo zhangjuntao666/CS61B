@@ -112,4 +112,52 @@ public class LinkedListDeque61BTest {
         assertThat(lld.size()).isEqualTo(2);
         assertThat(lld.toList()).containsExactly(1,2).inOrder();
     }
+
+    @Test
+    public void testGet1() {
+        Deque61B<Integer> lld = new LinkedListDeque61B<>();
+        assertThat(lld.get(1)).isEqualTo(null);
+    }
+
+    @Test
+    public void testGet2() {
+        Deque61B<Integer> lld = new LinkedListDeque61B<>();
+        lld.addFirst(2);
+        lld.addFirst(1);
+        lld.addLast(3);
+        assertThat(lld.get(3)).isEqualTo(null);
+    }
+
+    @Test
+    public void testGet3() {
+        Deque61B<Integer> lld = new LinkedListDeque61B<>();
+        lld.addFirst(2);
+        lld.addFirst(1);
+        lld.addLast(3);
+        assertThat(lld.get(2)).isEqualTo(3);
+    }
+
+    @Test
+    public void testGetRecursive1() {
+        Deque61B<Integer> lld = new LinkedListDeque61B<>();
+        assertThat(lld.getRecursive(1)).isEqualTo(null);
+    }
+
+    @Test
+    public void testGetRecursive2() {
+        Deque61B<Integer> lld = new LinkedListDeque61B<>();
+        lld.addFirst(2);
+        lld.addFirst(1);
+        lld.addLast(3);
+        assertThat(lld.getRecursive(3)).isEqualTo(null);
+    }
+
+    @Test
+    public void testGetRecursive3() {
+        Deque61B<Integer> lld = new LinkedListDeque61B<>();
+        lld.addFirst(2);
+        lld.addFirst(1);
+        lld.addLast(3);
+        assertThat(lld.getRecursive(2)).isEqualTo(3);
+    }
 }
