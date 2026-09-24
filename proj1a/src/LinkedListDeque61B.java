@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.ArrayList; // import the ArrayList class
 
 public class LinkedListDeque61B<T> implements Deque61B<T>{
     /*nested DLList<T>*/
@@ -35,12 +36,20 @@ public class LinkedListDeque61B<T> implements Deque61B<T>{
     @Override
     public void addLast(T x) {
         sentinel.prev = new DLList(x, sentinel.prev, sentinel);
+        sentinel.prev.prev.next = sentinel.prev;
         size += 1;
     }
 
     @Override
     public List<T> toList() {
-        return List.of();
+        List<T> returnList = new ArrayList<>();
+        DLList p = sentinel;
+
+        while (p.next.item != null) {
+            returnList.add(p.next.item);
+            p = p.next;
+        }
+        return returnList;
     }
 
     @Override
