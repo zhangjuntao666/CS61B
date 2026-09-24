@@ -2,39 +2,40 @@ import java.util.List;
 
 public class LinkedListDeque61B<T> implements Deque61B<T>{
     /*nested DLList<T>*/
-    private static class DLList<T> {
+    private class DLList {
         public T item;
-        public DLList<T> prev;
-        public DLList<T> next;
+        public DLList prev;
+        public DLList next;
         /*constructor of DDList*/
-        public DLList(T i, DLList<T> p, DLList<T> n) {
+        public DLList(T i, DLList p, DLList n) {
             item = i;
             prev = p;
             next = n;
         }
     }
 
-    private DLList<T> sentinel;
+    private DLList sentinel;
     private int size;
 
-    /*constructors of LinkedListDeque61B*/
-    public LinkedListDeque61B(T x) {
-
-
-    }
-
+    /*constructor of LinkedListDeque61B*/
     public LinkedListDeque61B() {
-
+        sentinel = new DLList(null, null, null);
+        sentinel.prev = sentinel;
+        sentinel.next = sentinel;
+        size = 0;
     }
 
     @Override
     public void addFirst(T x) {
-
+        sentinel.next = new DLList(x, sentinel, sentinel.next);
+        sentinel.next.next.prev = sentinel.next;
+        size += 1;
     }
 
     @Override
     public void addLast(T x) {
-
+        sentinel.prev = new DLList(x, sentinel.prev, sentinel);
+        size += 1;
     }
 
     @Override
@@ -49,7 +50,7 @@ public class LinkedListDeque61B<T> implements Deque61B<T>{
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
