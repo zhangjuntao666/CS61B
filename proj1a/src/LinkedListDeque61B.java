@@ -106,18 +106,26 @@ public class LinkedListDeque61B<T> implements Deque61B<T>{
         return null;
     }
 
+    /*在不写辅助函数updateNewp的限制下似乎无法完成？！真的没想到一个在不破坏sentinel的情况下将p传递下去的方式！*/
+    int i = 0; //这是一个非常不优雅的方式，不过我目前没想到更优雅的方式
     @Override
     public T getRecursive(int index) {
-        DLList p = sentinel;
-        if (p.next == sentinel) {
-            return null;
-        } else if (index == 0) {
-            return p.next.item;
+        if (index == 0) {
+            return updateNewp(i).next.item;
         } else {
-            index --;
-            p = p.next;
-            return getRecursive(index);
+            i ++;
+            return getRecursive(index - 1);
         }
+    }
 
+    /*getDecursive的辅助函数*/
+    private DLList updateNewp(int i) {
+        int k = 0;
+        DLList p = sentinel;
+        while (k < i) {
+            p = p.next;
+            k ++;
+        }
+        return p;
     }
 }
