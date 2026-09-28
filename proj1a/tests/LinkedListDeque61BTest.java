@@ -135,6 +135,7 @@ public class LinkedListDeque61BTest {
         lld.addFirst(1);
         lld.addLast(3);
         assertThat(lld.get(2)).isEqualTo(3);
+        assertThat(lld.get(100)).isEqualTo(null);
     }
 
     @Test
@@ -158,7 +159,7 @@ public class LinkedListDeque61BTest {
         lld.addFirst(2);
         lld.addFirst(1);
         lld.addLast(3);
-        assertThat(lld.getRecursive(2)).isEqualTo(3);
+        assertThat(lld.getRecursive(100)).isEqualTo(null); //newly fixed
         assertThat(lld.get(2)).isEqualTo(3);
     }
 }

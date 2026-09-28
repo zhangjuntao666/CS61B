@@ -110,7 +110,9 @@ public class LinkedListDeque61B<T> implements Deque61B<T>{
     int i = 0; //这是一个非常不优雅的方式，不过我目前没想到更优雅的方式
     @Override
     public T getRecursive(int index) {
-        if (index == 0) {
+        if (updateNewp(i) == sentinel) {
+            return null;
+        } else if (index == 0) {
             return updateNewp(i).next.item;
         } else {
             i ++;
@@ -124,8 +126,9 @@ public class LinkedListDeque61B<T> implements Deque61B<T>{
         DLList p = sentinel;
         while (k < i) {
             p = p.next;
-            k ++;
+            k++;
         }
         return p;
     }
 }
+
