@@ -110,11 +110,19 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
 
     @Override
     public T get(int index) {
+        if (index >= 0 && index < items.length) {
+            int First = nextFirstPlus1(nextFirst, items);
+            if (First + index < items.length) {
+                return items[First + index];
+            } else {
+                return items[First + index - items.length];
+            }
+        }
         return null;
     }
 
     @Override
     public T getRecursive(int index) {
-        return null;
+        throw new UnsupportedOperationException("No need to implement getRecursive for proj 1b");
     }
 }
