@@ -49,4 +49,17 @@ public class ArrayDeque61BTest {
         assertThat(a.toList()).containsExactly(1,2,3,4,5,6,7,8).inOrder();
     }
 
+    @Test
+    public void TestIsEmpty1() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        assertThat(a.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void TestIsEmpty2() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        a.addLast(8);
+        assertThat(a.isEmpty()).isFalse();
+    }
+
 }

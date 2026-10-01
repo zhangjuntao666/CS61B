@@ -21,11 +21,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     public void addFirst(T x) {
         items[nextFirst] = x;
         size ++;
-        if (nextFirst != 0) {
-            nextFirst --;
-        } else {
-            nextFirst = items.length - 1;
-        }
+        nextFirst = nextLastMinus1(nextFirst, items);
     }
 
     /*省去之后讨论nextFirst的前一项是谁*/
@@ -44,11 +40,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     public void addLast(T x) {
         items[nextLast] = x;
         size ++;
-        if (nextLast != items.length - 1) {
-            nextLast ++;
-        } else {
-            nextLast = 0;
-        }
+        nextLast = nextFirstPlus1(nextLast, items);
     }
 
     /*nextLastMinus1和nextFirstPlus1作用相同*/
@@ -78,12 +70,16 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        if (size == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
