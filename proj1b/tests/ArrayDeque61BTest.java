@@ -62,4 +62,75 @@ public class ArrayDeque61BTest {
         assertThat(a.isEmpty()).isFalse();
     }
 
+    @Test
+    public void TestSize() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        ArrayDeque61B<Integer> b = new ArrayDeque61B<>();
+        a.addFirst(3);
+        a.addFirst(2);
+        a.addFirst(1);
+        a.addLast(4);
+        a.addLast(5);
+        a.addLast(6);
+        a.addLast(7);
+        a.addLast(8);
+        assertThat(a.size()).isEqualTo(8);
+        assertThat(b.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void TestRemoveFirst() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        ArrayDeque61B<Integer> b = new ArrayDeque61B<>();
+        a.addFirst(3);
+        a.addFirst(2);
+        a.addFirst(1);
+        a.addLast(4);
+        a.addLast(5);
+        a.addLast(6);
+        a.addLast(7);
+        a.addLast(8);
+        assertThat(a.removeFirst()).isEqualTo(1);
+        assertThat(a.size()).isEqualTo(7);
+        assertThat(b.removeFirst()).isEqualTo(null);
+    }
+
+    @Test
+    public void TestRemoveLast() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        ArrayDeque61B<Integer> b = new ArrayDeque61B<>();
+        a.addFirst(3);
+        a.addFirst(2);
+        a.addFirst(1);
+        a.addLast(4);
+        a.addLast(5);
+        a.addLast(6);
+        a.addLast(7);
+        a.addLast(8);
+        assertThat(a.removeLast()).isEqualTo(8);
+        assertThat(a.size()).isEqualTo(7);
+        assertThat(b.removeFirst()).isEqualTo(null);
+    }
+
+    @Test
+    public void TestRemove() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        a.addFirst(3);
+        a.addFirst(2);
+        a.addFirst(1);
+        a.addLast(4);
+        a.addLast(5);
+        a.addLast(6);
+        a.addLast(7);
+        a.addLast(8);
+        assertThat(a.removeFirst()).isEqualTo(1);
+        assertThat(a.size()).isEqualTo(7);
+        assertThat(a.removeFirst()).isEqualTo(2);
+        assertThat(a.size()).isEqualTo(6);
+        assertThat(a.removeFirst()).isEqualTo(3);
+        assertThat(a.size()).isEqualTo(5);
+        assertThat(a.removeFirst()).isEqualTo(4);
+        assertThat(a.size()).isEqualTo(4);
+    }
+
 }
