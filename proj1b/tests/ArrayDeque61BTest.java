@@ -21,5 +21,32 @@ public class ArrayDeque61BTest {
 //
 //         assertWithMessage("Found fields that are not array or primitives").that(badFields).isEmpty();
 //     }
+    @Test
+    public void TestAddFirst() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        a.addFirst(7);
+        a.addFirst(6);
+        a.addFirst(5);
+        a.addFirst(4);
+        a.addFirst(3);
+        a.addFirst(2);
+        a.addFirst(1);
+        a.addLast(8);
+        assertThat(a.toList()).containsExactly(1,2,3,4,5,6,7,8).inOrder();
+    }
+
+    @Test
+    public void TestAddLast() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        a.addFirst(3);
+        a.addFirst(2);
+        a.addFirst(1);
+        a.addLast(4);
+        a.addLast(5);
+        a.addLast(6);
+        a.addLast(7);
+        a.addLast(8);
+        assertThat(a.toList()).containsExactly(1,2,3,4,5,6,7,8).inOrder();
+    }
 
 }
