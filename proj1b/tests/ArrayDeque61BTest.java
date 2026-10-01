@@ -195,4 +195,82 @@ public class ArrayDeque61BTest {
         assertThat(a.get(0)).isEqualTo(1);
         assertThat(a.get(2)).isEqualTo(3);
     }
+
+    @Test
+    public void TestResizeUp1() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        a.addFirst(3);
+        a.addFirst(2);
+        a.addFirst(1);
+        a.addLast(4);
+        a.addLast(5);
+        a.addLast(6);
+        a.addLast(7);
+        a.addLast(8);
+        a.addLast(9);
+        assertThat(a.toList()).containsExactly(1,2,3,4,5,6,7,8,9).inOrder();
+    }
+
+    @Test
+    public void TestResizeUp2() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        a.addFirst(3);
+        a.addFirst(2);
+        a.addFirst(1);
+        a.addLast(4);
+        a.addLast(5);
+        a.addLast(6);
+        a.addLast(7);
+        a.addLast(8);
+        a.addLast(9);
+        a.addFirst(0);
+        a.addFirst(-1);
+        a.addFirst(-2);
+        a.addFirst(-3);
+        a.addFirst(-4);
+        a.addFirst(-5);
+        a.addFirst(-6);
+        a.addFirst(-7);
+        a.addFirst(-8);
+        a.addFirst(-9);
+        assertThat(a.toList()).containsExactly(-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9).inOrder();
+    }
+
+    @Test
+    public void TestResizeDown() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        a.addFirst(3);
+        a.addFirst(2);
+        a.addFirst(1);
+        a.addLast(4);
+        a.addLast(5);
+        a.addLast(6);
+        a.addLast(7);
+        a.addLast(8);
+        a.addLast(9);
+        a.addFirst(0);
+        a.addFirst(-1);
+        a.addFirst(-2);
+        a.addFirst(-3);
+        a.addFirst(-4);
+        a.addFirst(-5);
+        a.addFirst(-6);
+        a.addFirst(-7);
+        a.addFirst(-8);
+        a.addFirst(-9);//a.items.length == 32
+        a.removeFirst();
+        a.removeFirst();
+        a.removeFirst();
+        a.removeFirst();
+        a.removeFirst();
+        a.removeFirst();
+        a.removeFirst();
+        a.removeFirst();
+        a.removeFirst();
+        a.removeFirst();
+        a.removeFirst();
+        a.removeFirst();
+        assertThat(a.toList()).containsExactly(3,4,5,6,7,8,9).inOrder();
+    }
+
 }
