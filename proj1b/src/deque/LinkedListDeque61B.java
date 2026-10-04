@@ -1,9 +1,36 @@
 package deque;
 
 import java.util.ArrayList; // import the ArrayList class
+import java.util.Iterator;
 import java.util.List;
 
 public class LinkedListDeque61B<T> implements Deque61B<T> {
+    @Override
+    public Iterator<T> iterator() {
+        return new DLListIterator();
+    }
+
+    /*实现Iterator*/
+    private class DLListIterator implements Iterator<T> {
+        private DLList p;
+        /*constructor*/
+        public DLListIterator() {
+            p = sentinel.next;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return p != sentinel;
+        }
+
+        @Override
+        public T next() {
+            T returnItem = p.item;
+            p = p.next;
+            return returnItem;
+        }
+    }
+
     /*nested DLList<T>*/
     private class DLList {
         public T item;

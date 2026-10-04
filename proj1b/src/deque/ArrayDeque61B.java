@@ -1,6 +1,7 @@
 package deque;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.lang.Math;
 
@@ -152,5 +153,32 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     @Override
     public T getRecursive(int index) {
         throw new UnsupportedOperationException("No need to implement getRecursive for proj 1b");
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new AListIterator();
+    }
+
+    /*实现Iterator*/
+    private class AListIterator implements Iterator<T> {
+        private int index;
+
+        /*constructor*/
+        public AListIterator() {
+            index = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < size;
+        }
+
+        @Override
+        public T next() {
+            T returnItem = items[index];
+            index += 1;
+            return returnItem;
+        }
     }
 }
