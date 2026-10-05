@@ -8,11 +8,11 @@ A:
 
 Q: What's something you felt proud of in your code, if anything?
 
-A:
+A: It works!
 
 Q: What's something that was particularly inelegant in your code, if anything?
 
-A:
+A: The use of helper methods.
 
 Q: What did you learn by talking to your partner about writing ArrayDeque61B?
 
@@ -20,7 +20,7 @@ A:
 
 Q: What do you wish you would have known before writing ArrayDeque61B, if anything?
 
-A:
+A: how to create a data structure
 
 Q: If you wrote ArrayDeque61B again, what would you do differently, if anything?
 
@@ -28,7 +28,7 @@ A:
 
 -----
 
-LinkedListDeque61B:
+LinkedListDeque61B: same to the answer above
 
 Q: Give an example of at least one idea from the staff solution that would have made your solution better (if any).
 
