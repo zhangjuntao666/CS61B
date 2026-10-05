@@ -10,6 +10,33 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
         return new DLListIterator();
     }
 
+    /*override equals*/
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (other instanceof LinkedListDeque61B oas) {
+            if (this.size != oas.size) {
+                return false;
+            }
+            DLList p;
+            DLList o;
+            p = this.sentinel.next;
+            o = oas.sentinel.next;
+            while (p != sentinel) {
+                if (o.item != p.item) {
+                    return false;
+                }
+                p = p.next;
+                o = o.next;
+            }
+            return true;
+        }
+        return false;
+    }
+
+
     /*实现Iterator*/
     private class DLListIterator implements Iterator<T> {
         private DLList p;
