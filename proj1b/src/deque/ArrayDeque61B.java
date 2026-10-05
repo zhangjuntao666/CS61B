@@ -163,10 +163,11 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     /*实现Iterator*/
     private class AListIterator implements Iterator<T> {
         private int index;
-
+        private int first;
         /*constructor*/
         public AListIterator() {
             index = 0;
+            first = nextFirstPlus1(nextFirst, items);
         }
 
         @Override
@@ -176,7 +177,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
 
         @Override
         public T next() {
-            T returnItem = items[index];
+            T returnItem = items[(first + index) % items.length];
             index += 1;
             return returnItem;
         }
@@ -200,5 +201,21 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
             return true;
         }
         return false;
+    }
+
+    /*override toString*/
+    @Override
+    public String toString() {
+        StringBuilder returnSB = new StringBuilder("[");
+        int first = nextFirstPlus1(nextFirst, items);
+        for (int i=0; i<size-1; i++) {
+            returnSB.append(items[(i + first) % items.length]);
+            returnSB.append(", ");
+        }
+        if (items[(first + size - 1) % items.length] != null) {
+            returnSB.append(items[(first + size - 1) % items.length]);
+        }
+        returnSB.append("]");
+        return returnSB.toString();
     }
 }

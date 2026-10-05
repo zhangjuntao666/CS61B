@@ -10,6 +10,28 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
         return new DLListIterator();
     }
 
+
+    /*实现Iterator*/
+    private class DLListIterator implements Iterator<T> {
+        private DLList p;
+        /*constructor*/
+        public DLListIterator() {
+            p = sentinel.next;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return p != sentinel;
+        }
+
+        @Override
+        public T next() {
+            T returnItem = p.item;
+            p = p.next;
+            return returnItem;
+        }
+    }
+
     /*override equals*/
     @Override
     public boolean equals(Object other) {
@@ -36,26 +58,22 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
         return false;
     }
 
-
-    /*实现Iterator*/
-    private class DLListIterator implements Iterator<T> {
-        private DLList p;
-        /*constructor*/
-        public DLListIterator() {
-            p = sentinel.next;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return p != sentinel;
-        }
-
-        @Override
-        public T next() {
-            T returnItem = p.item;
+    /*override toString*/
+    @Override
+    public String toString() {
+        StringBuilder returnSB = new StringBuilder("[");
+        DLList p;
+        p = sentinel.next;
+        while (p != sentinel.prev) {
+            returnSB.append(p.item);
+            returnSB.append(", ");
             p = p.next;
-            return returnItem;
         }
+        if (p.item != null) {
+            returnSB.append(p.item);
+        }
+        returnSB.append("]");
+        return returnSB.toString();
     }
 
     /*nested DLList<T>*/
