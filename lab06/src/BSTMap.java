@@ -15,9 +15,11 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     }
 
     private Node root;
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
+        size += 1;
         root = putHelper(key, value, root);
     }
 
@@ -76,12 +78,13 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public void clear() {
-
+        size = 0;
+        root = null;
     }
 
     @Override
