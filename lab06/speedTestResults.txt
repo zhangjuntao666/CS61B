@@ -1,0 +1,43 @@
+String length: 10
+
+Input Size: 100
+- ULLMap: 0.00 sec
+- BSTMap: 0.00 sec
+- TreeMap: 0.00 sec
+- HashMap: 0.00 sec
+
+Input Size: 1,000
+- ULLMap: 0.01 sec
+- BSTMap: 0.00 sec
+- TreeMap: 0.00 sec
+- HashMap: 0.00 sec
+
+Input Size: 10,000
+- ULLMap: 0.33 sec
+- BSTMap: 0.00 sec
+- TreeMap: 0.00 sec
+- HashMap: 0.00 sec
+
+Input Size: 20,000
+- ULLMap: 1.16 sec
+- BSTMap: 0.01 sec
+- TreeMap: 0.01 sec
+- HashMap: 0.00 sec
+
+Input Size: 30,000
+- ULLMap: 2.71 sec
+- BSTMap: 0.01 sec
+- TreeMap: 0.01 sec
+- HashMap: 0.00 sec
+
+Input Size: 40,000
+- ULLMap: Stack Overflow (程序崩溃，无法完成插入)
+- BSTMap: 0.01 sec
+- TreeMap: 0.01 sec
+- HashMap: 0.01 sec
+
+Input Size: 100,000
+- ULLMap: Stack Overflow
+- BSTMap: 0.03 sec
+- TreeMap: 0.03 sec
+- HashMap: 0.02 sec
