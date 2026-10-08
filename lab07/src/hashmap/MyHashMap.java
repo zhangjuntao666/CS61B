@@ -36,7 +36,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     /** Constructors */
     public MyHashMap() {
-        buckets = new Collection[32];
+        buckets = new Collection[16];
         M = 16;
         N = 0;
         Factor = 0.75;
@@ -140,37 +140,60 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     @Override
     public V get(K key) {
-        return null;
+        int index = Math.floorMod(key.hashCode(), M);
+        if (buckets[index] == null) {
+            return null;
+        } else {
+            for (Node node : buckets[index]) {
+                if (node.key.equals(key)) {
+                    return node.value;
+                }
+            }
+            return null;
+        }
     }
 
     @Override
     public boolean containsKey(K key) {
-        return false;
+        int index = Math.floorMod(key.hashCode(), M);
+        if (buckets[index] == null) {
+            return false;
+        } else {
+            for (Node node : buckets[index]) {
+                if (node.key.equals(key)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     @Override
     public int size() {
-        return 0;
+        return N;
     }
 
     @Override
     public void clear() {
-
+        for (int i = 0; i < M; i++) {
+            buckets[i] = null;
+        }
+        N = 0;
     }
 
     @Override
     public Set<K> keySet() {
-        return Set.of();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public V remove(K key) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Iterator<K> iterator() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 
