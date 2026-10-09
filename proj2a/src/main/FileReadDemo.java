@@ -11,7 +11,7 @@ public class FileReadDemo {
 
         while (!in.isEmpty()) {
             i += 1;
-            String nextLine = in.readLine();
+            String nextLine = in.readLine(); //返回当前行并指向下一行
             System.out.print("Line " + i + " is: ");
             System.out.println(nextLine);
             System.out.print("After splitting on tab characters, the first word is: ");

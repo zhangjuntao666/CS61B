@@ -1,6 +1,11 @@
 package ngrams;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+
+import edu.princeton.cs.algs4.In;
 
 import static ngrams.TimeSeries.MAX_YEAR;
 import static ngrams.TimeSeries.MIN_YEAR;
@@ -18,12 +23,49 @@ import static ngrams.TimeSeries.MIN_YEAR;
 public class NGramMap {
 
     // TODO: Add any necessary static/instance variables.
-
+    private Map<String, TimeSeries> data; //用来存每个单词的历史数据
+    private TimeSeries total;
     /**
      * Constructs an NGramMap from WORDSFILENAME and COUNTSFILENAME.
      */
     public NGramMap(String wordsFilename, String countsFilename) {
         // TODO: Fill in this constructor. See the "NGramMap Tips" section of the spec for help.
+        data = new HashMap<>(); //查找更快
+        store1(wordsFilename);
+        total = new TimeSeries(); //存每年的总词数
+        store2(countsFilename);
+    }
+
+    /*将word存到data里*/
+    private void store1(String wordsFilename) {
+        In in = new In(wordsFilename);
+
+        while (!in.isEmpty()) {
+            String nextLine = in.readLine();
+            String[] splitLine = nextLine.split("\t");
+            String word = splitLine[0];
+            int year = Integer.parseInt(splitLine[1]);
+            double num = Double.parseDouble(splitLine[2]);
+
+            if (!data.containsKey(word)) {
+                data.put(word, new TimeSeries());
+            }
+            data.get(word).put(year, num);
+        }
+    }
+
+    /*将每年总数存到时间序列total里*/
+    private void store2(String countsFilename) {
+        In in  = new In(countsFilename);
+
+        while (!in.isEmpty()) {
+            String nextLine = in.readLine();
+            String[] splitLine = nextLine.split(",");
+            int year = Integer.parseInt(splitLine[0]);
+            double num = Double.parseDouble(splitLine[1]);
+
+            total.put(year, num);
+        }
     }
 
     /**
@@ -35,7 +77,12 @@ public class NGramMap {
      */
     public TimeSeries countHistory(String word, int startYear, int endYear) {
         // TODO: Fill in this method.
-        return null;
+        if (data.containsKey(word)) {
+            TimeSeries tsCopy = new TimeSeries(data.get(word), startYear, endYear);
+            return tsCopy;
+        } else {
+            return new TimeSeries();
+        }
     }
 
     /**
@@ -46,7 +93,15 @@ public class NGramMap {
      */
     public TimeSeries countHistory(String word) {
         // TODO: Fill in this method.
-        return null;
+        if (data.containsKey(word)) {
+            TimeSeries tsCopy = new TimeSeries();
+            for (int key : data.get(word).keySet()) {
+                tsCopy.put(key, data.get(word).get(key));
+            }
+            return tsCopy;
+        } else {
+            return new TimeSeries();
+        }
     }
 
     /**
