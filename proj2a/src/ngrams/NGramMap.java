@@ -168,7 +168,11 @@ public class NGramMap {
     public TimeSeries summedWeightHistory(Collection<String> words,
                                           int startYear, int endYear) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries sum = new TimeSeries();
+        for (String key : words) {
+            sum = sum.plus(weightHistory(key, startYear, endYear));
+        }
+        return sum;
     }
 
     /**
@@ -177,7 +181,11 @@ public class NGramMap {
      */
     public TimeSeries summedWeightHistory(Collection<String> words) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries sum = new TimeSeries();
+        for (String key : words) {
+            sum = sum.plus(weightHistory(key));
+        }
+        return sum;
     }
 
     // TODO: Add any private helper methods.
