@@ -31,7 +31,6 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      */
     public TimeSeries(TimeSeries ts, int startYear, int endYear) {
         super();
-        // TODO: Fill in this constructor.
         for (int year = startYear; year <= endYear; year ++ ) {
             if (ts.containsKey(year)) {
                 this.put(year, ts.get(year));
@@ -43,7 +42,6 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      *  Returns all years for this time series in ascending order.
      */
     public List<Integer> years() {
-        // TODO: Fill in this method.
         List<Integer> result = new ArrayList<>();
         for (int year : this.keySet()) {
             result.add(year);
@@ -56,7 +54,6 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      *  order of years().
      */
     public List<Double> data() {
-        // TODO: Fill in this method.
         List<Double> result = new ArrayList<>();
         for (int year : this.keySet()) {
             result.add(this.get(year));
@@ -74,7 +71,6 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      * should store the value from the TimeSeries that contains that year.
      */
     public TimeSeries plus(TimeSeries ts) {
-        // TODO: Fill in this method.
         TimeSeries returnTs = new TimeSeries();
         for (int year : this.keySet()) {
             if (ts.containsKey(year)) {
@@ -102,10 +98,14 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      * If TS has a year that is not in this TimeSeries, ignore it.
      */
     public TimeSeries dividedBy(TimeSeries ts) {
-        // TODO: Fill in this method.
-        return null;
+        TimeSeries returnTS = new TimeSeries();
+        for (int year : this.keySet()) {
+            if (!ts.containsKey(year)) {
+                throw new IllegalArgumentException();
+            } else {
+                returnTS.put(year, (double) this.get(year) / ts.get(year));
+            }
+        }
+        return returnTS;
     }
-
-    // TODO: Add any private helper methods.
-    // TODO: Remove all TODO comments before submitting.
 }
