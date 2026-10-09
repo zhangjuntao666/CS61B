@@ -109,7 +109,11 @@ public class NGramMap {
      */
     public TimeSeries totalCountHistory() {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries totalCopy = new TimeSeries();
+        for (int key : total.keySet()) {
+            totalCopy.put(key, total.get(key));
+        }
+        return totalCopy;
     }
 
     /**
@@ -119,7 +123,19 @@ public class NGramMap {
      */
     public TimeSeries weightHistory(String word, int startYear, int endYear) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries weightTs = new TimeSeries();
+        if (data.containsKey(word)) {
+            TimeSeries original = data.get(word);
+            for (int year = startYear; year <= endYear; year ++) {
+                if (original.containsKey(year) && total.containsKey(year)) {
+                    double frequency = original.get(year) / total.get(year);
+                    weightTs.put(year, frequency);
+                }
+            }
+            return weightTs;
+        } else {
+            return new TimeSeries();
+        }
     }
 
     /**
@@ -129,7 +145,19 @@ public class NGramMap {
      */
     public TimeSeries weightHistory(String word) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries weightTS = new TimeSeries();
+        if (data.containsKey(word)) {
+            TimeSeries original = data.get(word);
+            for (int year : original.keySet()) {
+                if (total.containsKey(year)) {
+                    double frequency = original.get(year) / total.get(year);
+                    weightTS.put(year, frequency);
+                }
+            }
+            return weightTS;
+        } else {
+            return new TimeSeries();
+        }
     }
 
     /**
