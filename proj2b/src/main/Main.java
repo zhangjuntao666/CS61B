@@ -1,5 +1,6 @@
 package main;
 
+import wordnet.WordNet;
 import browser.NgordnetServer;
 import demo.DummyHistoryHandler;
 import demo.DummyHistoryTextHandler;
