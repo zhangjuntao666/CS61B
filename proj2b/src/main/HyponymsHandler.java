@@ -32,8 +32,13 @@ public class HyponymsHandler extends NgordnetQueryHandler {
             }
         }
 
-        for (String word : query) {
-            returnWord.addAll(wn.getHyponyms(word));
+        if (query.isEmpty()) {
+            return "[]";
+        }
+
+        returnWord.addAll(wn.getHyponyms(query.get(0)));
+        for (int i = 1; i < query.size(); i++) {
+            returnWord.retainAll(wn.getHyponyms(query.get(i)));
         }
         return returnWord.toString();
     }

@@ -37,7 +37,7 @@ public class Main {
     }
     public static void main(String[] args) {
         NgordnetServer hns = new NgordnetServer();
-        WordNet wn = new WordNet("data/wordnet/synsets16.txt", "data/wordnet/hyponyms16.txt");
+        WordNet wn = new WordNet("data/wordnet/synsets.txt", "data/wordnet/hyponyms.txt");
 
         hns.startUp();
         hns.register("history", new DummyHistoryHandler());
