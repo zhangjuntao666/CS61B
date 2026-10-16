@@ -42,7 +42,16 @@ public class WordNet {
     }
 
     private void loadHyponyms(String hyponyms) {
+        In in = new In(hyponyms);
 
+        while (!in.isEmpty()) {
+            String nextLine = in.readLine();
+            String[] splitLine = nextLine.split(",");
+            int ID = Integer.parseInt(splitLine[0]);
+            for (int i = 1; i < splitLine.length; i++) {
+                graphHyponyms.addEdges(ID, Integer.parseInt(splitLine[i]));
+            }
+        }
     }
 
     /*查找一个word的所有ID，遍历所有的ID，
