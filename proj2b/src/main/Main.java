@@ -1,5 +1,6 @@
 package main;
 
+import ngrams.NGramMap;
 import wordnet.WordNet;
 import browser.NgordnetServer;
 import demo.DummyHistoryHandler;
@@ -37,12 +38,13 @@ public class Main {
     }
     public static void main(String[] args) {
         NgordnetServer hns = new NgordnetServer();
+        NGramMap ngm = new NGramMap("data/ngrams/top_14377_words.csv", "data/ngrams/total_counts.csv");
         WordNet wn = new WordNet("data/wordnet/synsets.txt", "data/wordnet/hyponyms.txt");
 
         hns.startUp();
         hns.register("history", new DummyHistoryHandler());
         hns.register("historytext", new DummyHistoryTextHandler());
-        hns.register("hyponyms", new HyponymsHandler(wn));
+        hns.register("hyponyms", new HyponymsHandler(wn, ngm));
 
         System.out.println("Finished server startup! Visit http://localhost:4567/ngordnet.html");
     }
