@@ -37,11 +37,12 @@ public class Main {
     }
     public static void main(String[] args) {
         NgordnetServer hns = new NgordnetServer();
+        WordNet wn = new WordNet("data/wordnet/synsets16.txt", "data/wordnet/hyponyms16.txt");
 
         hns.startUp();
         hns.register("history", new DummyHistoryHandler());
         hns.register("historytext", new DummyHistoryTextHandler());
-        hns.register("hyponyms", new HyponymsHandler());
+        hns.register("hyponyms", new HyponymsHandler(wn));
 
         System.out.println("Finished server startup! Visit http://localhost:4567/ngordnet.html");
     }
