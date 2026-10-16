@@ -58,10 +58,24 @@ public class WordNet {
     将每个ID可以达到的ID记录在一个set里。
     再遍历这个set里的所有ID，
     利用synsetMap获取所有的hyponyms，并添加都一个returnSet里*/
-    public Set<String> getHyponyms() {
-
+    public Set<String> getHyponyms(String word) {
         Set<String> returnSet = new HashSet<>();
+        Set<Integer> setID = new HashSet<>();
 
+        if (!wordToIDs.containsKey(word)) {
+            return returnSet;
+        }
+        //查找一个word的所有ID，遍历所有的ID，
+        //将每个ID可以达到的ID记录在一个set里。
+        for (int ID : wordToIDs.get(word)) {
+            setID.addAll(graphHyponyms.getAllIDsBelow(ID));
+        }
+
+        //再遍历这个set里的所有ID，
+        //利用synsetMap获取所有的hyponyms，并添加都一个returnSet里
+        for (int ID : setID) {
+            returnSet.addAll(synsetMap.get(ID));
+        }
         return returnSet;
     }
 
