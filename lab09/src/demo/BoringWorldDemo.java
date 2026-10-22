@@ -25,7 +25,7 @@ public class BoringWorldDemo {
             }
         }
 
-        // fills in a block 15 tiles wide by 5 tiles tall
+        // fills in a block 15 tiles wide by 5 tiles wall
         for (int x = 20; x < 35; x++) {
             for (int y = 5; y < 10; y++) {
                 world[x][y] = Tileset.WALL;
