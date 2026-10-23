@@ -1,8 +1,12 @@
 package Lab9;
 
+import org.junit.jupiter.api.MethodOrderer;
 import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
+import utils.RandomUtils;
+
+import java.util.Random;
 
 /**
  * Draws a world initially full of trees.
@@ -13,7 +17,12 @@ public class Task2 {
      */
     private static final int WIDTH = 30;
     private static final int HEIGHT = 20;
-    private static final TETile[][] world = new TETile[WIDTH][HEIGHT];
+
+    private static final long SEED = 2873123;
+    private static final Random rand = new Random(SEED);
+
+    private static TETile[][] world = new TETile[WIDTH][HEIGHT];
+
     private static void fillWithTrees() {
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
@@ -36,12 +45,20 @@ public class Task2 {
         }
     }
 
+    private static void addRandomSquare(TETile[][] world, Random rand) {
+        int size = RandomUtils.uniform(rand, 3, 8);
+        int startX = RandomUtils.uniform(rand, 0, WIDTH - size);
+        int startY = RandomUtils.uniform(rand, size, HEIGHT);
+
+        drawSquare(world, startX, startY, size, Tileset.FLOWER);
+    }
+
     public static void main(String[] args) {
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
 
         fillWithTrees();
-        drawSquare(world, 10, 7, 5, Tileset.FLOWER);
+        addRandomSquare(world, rand);
         ter.renderFrame(world);
     }
 }
