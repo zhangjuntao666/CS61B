@@ -45,12 +45,22 @@ public class Task2 {
         }
     }
 
+    private static TETile randomTile() {
+        int tileNum = rand.nextInt(3);
+        return switch (tileNum) {
+            case 0 -> Tileset.FLOWER;
+            case 1 -> Tileset.WALL;
+            case 2 -> Tileset.WATER;
+            default -> Tileset.NOTHING;
+        };
+    }
+
     private static void addRandomSquare(TETile[][] world, Random rand) {
         int size = RandomUtils.uniform(rand, 3, 8);
         int startX = RandomUtils.uniform(rand, 0, WIDTH - size);
         int startY = RandomUtils.uniform(rand, size, HEIGHT);
 
-        drawSquare(world, startX, startY, size, Tileset.FLOWER);
+        drawSquare(world, startX, startY, size, randomTile());
     }
 
     public static void main(String[] args) {
