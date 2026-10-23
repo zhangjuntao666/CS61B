@@ -68,7 +68,9 @@ public class Task2 {
         ter.initialize(WIDTH, HEIGHT);
 
         fillWithTrees();
-        addRandomSquare(world, rand);
+        for (int i = 0; i < 5; i++) {
+            addRandomSquare(world, rand);
+        }
         ter.renderFrame(world);
     }
 }
