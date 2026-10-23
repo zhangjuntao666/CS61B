@@ -58,7 +58,7 @@ public class Task2 {
     private static void addRandomSquare(TETile[][] world, Random rand) {
         int size = RandomUtils.uniform(rand, 3, 8);
         int startX = RandomUtils.uniform(rand, 0, WIDTH - size);
-        int startY = RandomUtils.uniform(rand, size, HEIGHT);
+        int startY = RandomUtils.uniform(rand, size, HEIGHT - 5);
 
         drawSquare(world, startX, startY, size, randomTile());
     }
