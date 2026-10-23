@@ -11,16 +11,18 @@ public class Task1 {
     /**
      * Fills the entire 2D world with the Tileset.TREE tile.
      */
-    private static final TETile[][] world = new TETile[30][20];
+    private static final int WIDTH = 30;
+    private static final int HEIGHT = 20;
+    private static final TETile[][] world = new TETile[WIDTH][HEIGHT];
     private static void fillWithTrees() {
-        for (int i = 0; i < 30; i++) {
-            for (int j = 0; j < 20; j++) {
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
                 world[i][j] = Tileset.NOTHING;
             }
         }
 
-        for (int i = 0; i < 30; i++) { //水平方向，即向右时行数i增加。这里和平面直角坐标系是一致的，(i,j)就是坐标
-            for (int j = 0; j < 15; j++) {
+        for (int i = 0; i < WIDTH; i++) { //水平方向，即向右时行数i增加。这里和平面直角坐标系是一致的，(i,j)就是坐标
+            for (int j = 0; j < HEIGHT - 5; j++) {
                 world[i][j] = Tileset.TREE;
             }
         }
@@ -29,7 +31,7 @@ public class Task1 {
 
     public static void main(String[] args) {
         TERenderer ter = new TERenderer();
-        ter.initialize(30, 20);
+        ter.initialize(WIDTH, HEIGHT);
 
         fillWithTrees();
 
