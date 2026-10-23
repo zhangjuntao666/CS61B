@@ -68,7 +68,7 @@ public class Task3 {
         ter.initialize(WIDTH, HEIGHT);
 
         fillWithTrees();
-
+        int sum = 0;
         char c;
         while (true) {
             while (StdDraw.hasNextKeyTyped()) {
@@ -78,6 +78,7 @@ public class Task3 {
                 switch (c) {
                     case 'n':
                         addRandomSquare(world, rand);
+                        sum ++;
                         break;
                     case 'q':
                         System.exit(0);
@@ -86,8 +87,11 @@ public class Task3 {
                         break;
                 }
             }
-
             ter.renderFrame(world);
+            StdDraw.setPenColor(StdDraw.WHITE);
+            StdDraw.textLeft(1, 17, "Number of squares: " + sum);
+            StdDraw.show();
+            StdDraw.pause(2);
         }
     }
 }
