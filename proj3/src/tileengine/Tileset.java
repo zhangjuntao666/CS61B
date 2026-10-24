@@ -32,8 +32,22 @@ public class Tileset {
     public static final TETile SAND = new TETile('▒', Color.yellow, Color.black, "sand", 9);
     public static final TETile MOUNTAIN = new TETile('▲', Color.gray, Color.black, "mountain", 10);
     public static final TETile TREE = new TETile('♠', Color.green, Color.black, "tree", 11);
-
     public static final TETile CELL = new TETile('█', Color.white, Color.black, "cell", 12);
+
+    public static final TETile DOOR = new TETile('▢', Color.orange, Color.black, "exit door", 20);
+    public static final TETile COIN = new TETile('$', Color.yellow, Color.black, "coin", 21);
+    public static final TETile POTION = new TETile('+', new Color(255, 105, 180), Color.black, "health potion", 22);
+    public static final TETile SPIKE = new TETile('^', Color.red, Color.black, "trap spike", 23);
+
+    public static final TETile LIGHT_ON = new TETile('*', Color.yellow, Color.black, "opened lamp", 30);
+    public static final TETile LIGHT_OFF = new TETile('o', Color.gray, Color.black, "closed lamp", 31);
+
+
+    public static final TETile FLOOR_1 = new TETile('·', Color.white, new Color(120, 120, 120), "floor", 40);
+    public static final TETile FLOOR_2 = new TETile('·', Color.lightGray, new Color(90, 90, 90), "floor", 41);
+    public static final TETile FLOOR_3 = new TETile('·', Color.gray, new Color(60, 60, 60), "floor", 42);
+    public static final TETile FLOOR_4 = new TETile('·', Color.darkGray, new Color(30, 30, 30), "floor", 43);
+    public static final TETile FLOOR_5 = new TETile('·', Color.black, new Color(10, 10, 10), "floor", 44);
 }
 
 
