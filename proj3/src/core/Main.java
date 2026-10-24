@@ -1,11 +1,20 @@
 package core;
 
+import tileengine.TERenderer;
+
 public class Main {
     public static void main(String[] args) {
-        private static final int WIDTH = 100;
-        private static final int HEIGHT =
         // build your own world!
+        int hudHeight = 5;
 
+        TERenderer ter = new TERenderer();
+        ter.initialize(World.WIDTH, World.HEIGHT + hudHeight);
+
+        /*catch from user*/
+        long seed = 1997;
+        World world = new World(seed);
+
+        ter.renderFrame(world.world);
 
     }
 }
