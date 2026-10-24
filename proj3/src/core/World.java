@@ -41,15 +41,16 @@ public class World {
     private void generateWorld() {
         for (int i =0; i < 100; i++) {
             createSquares();
+            createHallway();
         }
     }
 
-
+    /*画出没有走廊的world*/
     private void createSquares() {
         int width = RandomUtils.uniform(rand, 4, 9);
         int height = RandomUtils.uniform(rand, 4,9);
-        int startX = RandomUtils.uniform(rand, 1, WIDTH - 11);
-        int startY = RandomUtils.uniform(rand, 1, HEIGHT - 11);
+        int startX = RandomUtils.uniform(rand, 1, WIDTH - 9);
+        int startY = RandomUtils.uniform(rand, 1, HEIGHT - 9);
         Square s = new Square(width, height, startX, startY);
         if (squareList.isEmpty()) {
             squareList.add(s);
@@ -68,6 +69,48 @@ public class World {
                 drawSquare(startX, startY, width, height);
                 return ;
             }
+        }
+    }
+
+    /*画水平的走廊*/
+    private void drawHorizontal(int x1, int x2, int y) {
+        int startX = Math.min(x1, x2);
+        int endX = Math.max(x1, x2);
+        for (int x = startX; x <= endX; x++) {
+            world[x][y] = Tileset.FLOOR_3;
+            /*在走廊两侧加墙*/
+            if (world[x][y + 1] == Tileset.NOTHING) {
+                world[x][y + 1] = Tileset.WALL;
+            }
+            if (world[x][y - 1] == Tileset.NOTHING) {
+                world[x][y - 1] = Tileset.WALL;
+            }
+        }
+    }
+
+    /*画竖直的走廊*/
+    private void drawVertical(int y1, int y2, int x) {
+        int startY = Math.min(y1, y2);
+        int endY = Math.max(y1, y2);
+        for (int y = startY; y <= endY; y++) {
+            world[x][y] = Tileset.FLOOR_3;
+            // 走廊左右加墙
+            if (world[x + 1][y] == Tileset.NOTHING) {
+                world[x + 1][y] = Tileset.WALL;
+            }
+            if (world[x - 1][y] == Tileset.NOTHING) {
+                world[x - 1][y] = Tileset.WALL;
+            }
+        }
+    }
+
+    /*画两个square之间的走廊*/
+    private void createHallway() {
+        if (squareList.size() >= 2) {
+            Square s1 = squareList.get(squareList.size() - 1);
+            Square s2 = squareList.get(squareList.size() - 2);
+            drawHorizontal(s1.getCenterX(), s2.getCenterX(), s1.getCenterY());
+            drawVertical(s1.getCenterY(), s2.getCenterY(), s2.getCenterX());
         }
     }
 
