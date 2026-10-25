@@ -16,8 +16,8 @@ public class World {
 
     public TETile[][] world;
     private long seed;
-    private static Random rand;
-    private static List<Square> squareList = new ArrayList<>();
+    private Random rand;
+    private List<Square> squareList = new ArrayList<>();
     /*constructor*/
     /*receive the seed from Main to generate the world!*/
     public World (long seed) {
@@ -37,12 +37,13 @@ public class World {
         }
     }
 
-    /*generate a dark world based on the seed with FLOOR_5 and WALL (avatar, light_off, potion, spike, coin)*/
+    /*generate a totally light world based on the seed with FLOOR_5 and WALL, avatar, light_on, potion, spike, coin, door*/
     private void generateWorld() {
         for (int i =0; i < 100; i++) {
             createSquares();
             createHallway();
         }
+        createEntity(); //产生其他entities(明亮状态)
     }
 
     /*画出没有走廊的world*/
@@ -77,7 +78,7 @@ public class World {
         int startX = Math.min(x1, x2);
         int endX = Math.max(x1, x2);
         for (int x = startX; x <= endX; x++) {
-            world[x][y] = Tileset.FLOOR_3;
+            world[x][y] = Tileset.FLOOR_4;
             /*在走廊两侧加墙*/
             if (world[x][y + 1] == Tileset.NOTHING) {
                 world[x][y + 1] = Tileset.WALL;
@@ -93,7 +94,7 @@ public class World {
         int startY = Math.min(y1, y2);
         int endY = Math.max(y1, y2);
         for (int y = startY; y <= endY; y++) {
-            world[x][y] = Tileset.FLOOR_3;
+            world[x][y] = Tileset.FLOOR_4;
             // 走廊左右加墙
             if (world[x + 1][y] == Tileset.NOTHING) {
                 world[x + 1][y] = Tileset.WALL;
@@ -118,7 +119,7 @@ public class World {
         /*floor*/
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                world[startX + i][startY + j] = Tileset.FLOOR_3;
+                world[startX + i][startY + j] = Tileset.FLOOR_4;
             }
         }
         /*wall*/
@@ -163,4 +164,124 @@ public class World {
         }
     }
 
+    /*创建avatar, light_on, potion, spike, coin, door*/
+    private void createEntity() {
+        /*将avatar放在第一个room的中心*/
+        int playerX = squareList.get(0).getCenterX();
+        int playerY = squareList.get(0).getCenterY();
+        world[playerX][playerY] = Tileset.AVATAR;
+
+        //lightUp(playerX, playerY); //lightWorld时就不需要了
+
+        /*将出口door放在最后一个room的中心*/
+        int size = squareList.size();
+        int doorX = squareList.get(size - 1).getCenterX();
+        int doorY = squareList.get(size - 1).getCenterY();
+        world[doorX][doorY] = Tileset.DOOR;
+
+        randomLightEntity(Tileset.COIN, 20);
+        randomLightEntity(Tileset.SPIKE, 15);
+        randomLightEntity(Tileset.POTION, 9);
+
+        putLight();
+    }
+
+    /*再房间的随机tile上放指定数量的指定tile（亮版）,用于生成最开始明亮的world中的coin, potion和spike*/
+    private void randomLightEntity(TETile tile, int num) {
+        int sum = 0;
+        while (sum < num) {
+            int randX = RandomUtils.uniform(rand, 0, WIDTH - 1);
+            int randY = RandomUtils.uniform(rand, 0, HEIGHT - 1);
+            if (world[randX][randY] == Tileset.FLOOR_4) {
+                world[randX][randY] = tile;
+                sum ++;
+            }
+        }
+    }
+
+    /*在每个房间里都放一盏灯，位置随机。它周围一圈的FLOOR_4改用FLOOR_1，其次是FLOOR_2和FLOOR_3做多度。*/
+    private void putLight() {
+        for (Square s : squareList) {
+            boolean setYet = false;
+            int lx = 0;
+            int ly = 0;
+            while (setYet == false) {
+                lx = RandomUtils.uniform(rand, s.startX, s.startX + s.width - 1);
+                ly = RandomUtils.uniform(rand, s.startY, s.startY + s.height - 1);
+                if (world[lx][ly] == Tileset.FLOOR_4) {
+                    world[lx][ly] = Tileset.LIGHT_ON;
+                    setYet = true;
+                }
+            }
+            lightUp(lx, ly); //让每个灯旁边一圈亮起来！
+        }
+    }
+
+    /*将avatar和light周围的FLOOR_4点亮*/
+    private void lightUp(int x, int y) {
+        /*FLOOR_1*/
+        for (int i = 0; i < 2; i ++) {
+            if (world[x - 1][y - 1 + i] == Tileset.FLOOR_4) {
+                world[x - 1][y - 1 + i] = Tileset.FLOOR_1;
+            }
+            if (world[x + 1][y + i] == Tileset.FLOOR_4) {
+                world[x + 1][y + i] = Tileset.FLOOR_1;
+            }
+            if (world[x - 1 + i][y + 1] == Tileset.FLOOR_4) {
+                world[x - 1 + i][y + 1] = Tileset.FLOOR_1;
+            }
+            if (world[x + i][y - 1] == Tileset.FLOOR_4) {
+                world[x + i][y - 1] = Tileset.FLOOR_1;
+            }
+        }
+
+        /*FLOOR_2*/
+        for (int i = 0; i < 4; i ++) {
+            if (world[x - 2][y - 1 + i] == Tileset.FLOOR_4) {
+                world[x - 2][y - 1 + i] = Tileset.FLOOR_2;
+            }
+            if (world[x + 2][y - 2 + i] == Tileset.FLOOR_4) {
+                world[x + 2][y - 2 + i] = Tileset.FLOOR_2;
+            }
+            if (world[x - 2 + i][y - 2] == Tileset.FLOOR_4) {
+                world[x - 2 + i][y - 2] = Tileset.FLOOR_2;
+            }
+            if (world[x - 1 + i][y + 2] == Tileset.FLOOR_4) {
+                world[x - 1 + i][y + 2] = Tileset.FLOOR_2;
+            }
+        }
+
+        /*FLOOR_3*/
+        for (int i = 0; i < 6; i++) {
+            if (world[x - 3][y - 2 + i] == Tileset.FLOOR_4) {
+                world[x - 3][y - 2 + i] = Tileset.FLOOR_3;
+            }
+            if (world[x + 3][y - 3 + i] == Tileset.FLOOR_4) {
+                world[x + 3][y - 3 + i] = Tileset.FLOOR_3;
+            }
+            if (world[x - 3 + i][y - 3] == Tileset.FLOOR_4) {
+                world[x - 3 + i][y - 3] = Tileset.FLOOR_3;
+            }
+            if (world[x - 2 + i][y + 3] == Tileset.FLOOR_4) {
+                world[x - 2 + i][y + 3] = Tileset.FLOOR_3;
+            }
+        }
+    }
+
+    /*生成明亮（默认）或者黑暗的世界，用于ter的渲染*/
+    /*
+    public TETile[][] renderWorld(boolean lightOn, int playerX, int playerY) {
+        TETile[][] renderWorld = TETile.copyOf(world);
+
+        if (lightOn) {
+            return  renderWorld;
+        }
+
+        int[][] avatarDistance = calculateAvatarBFS(playerX, playerY);
+
+    }
+
+    private int[][] calculateAvatarBFS(int px, int py) {
+
+    }*/
 }

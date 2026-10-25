@@ -38,6 +38,10 @@ public class Tileset {
     public static final TETile COIN = new TETile('$', Color.yellow, Color.black, "coin", 21);
     public static final TETile POTION = new TETile('+', new Color(255, 105, 180), Color.black, "health potion", 22);
     public static final TETile SPIKE = new TETile('^', Color.red, Color.black, "trap spike", 23);
+    public static final TETile SPIKE_DARK = new TETile('^', new Color(80, 0, 0), Color.black, "spike", 24);
+    public static final TETile POTION_DARK = new TETile('+', new Color(100, 0, 0), Color.black, "potion", 25);
+    public static final TETile DOOR_DARK = new TETile('▢', new Color(0, 80, 80), Color.black, "exit door", 26);
+    public static final TETile WALL_DARK = new TETile('#', new Color(60, 30, 30), Color.black, "wall", 27);
 
     public static final TETile LIGHT_ON = new TETile('*', Color.yellow, Color.black, "opened lamp", 30);
     public static final TETile LIGHT_OFF = new TETile('o', Color.gray, Color.black, "closed lamp", 31);
