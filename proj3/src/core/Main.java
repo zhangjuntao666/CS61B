@@ -1,6 +1,7 @@
 package core;
 
 import tileengine.TERenderer;
+import tileengine.TETile;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,7 +15,11 @@ public class Main {
         long seed = 1997;
         World world = new World(seed);
 
-        ter.renderFrame(world.world);
+        boolean lightOn = true;
+
+        TETile[][] renderWorld = world.renderWorld(lightOn);
+
+        ter.renderFrame(renderWorld);
 
     }
 }

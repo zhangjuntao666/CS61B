@@ -4,26 +4,35 @@ import tileengine.TETile;
 import tileengine.Tileset;
 import utils.RandomUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class World {
 
     // build your own world!
     public static final int WIDTH = 60;
     public static final int HEIGHT = 40;
-
-    public TETile[][] world;
     private long seed;
     private Random rand;
+
+    public TETile[][] world;
     private List<Square> squareList = new ArrayList<>();
+    public int avatarX;
+    public int avatarY;
+    private List<Light> lightList = new ArrayList<>();
+    private int[][] distances = new int[WIDTH][HEIGHT]; //用来记录每个地砖到光源的距离
     /*constructor*/
     /*receive the seed from Main to generate the world!*/
     public World (long seed) {
         this.seed = seed;
         this.world = new TETile[WIDTH][HEIGHT];
         this.rand = new Random(seed);
+
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                distances[i][j] = 999;
+            }
+        }
+
         withNothing();
         generateWorld(); //just for test
     }
@@ -167,11 +176,11 @@ public class World {
     /*创建avatar, light_on, potion, spike, coin, door*/
     private void createEntity() {
         /*将avatar放在第一个room的中心*/
-        int playerX = squareList.get(0).getCenterX();
-        int playerY = squareList.get(0).getCenterY();
-        world[playerX][playerY] = Tileset.AVATAR;
-
-        //lightUp(playerX, playerY); //lightWorld时就不需要了
+        avatarX = squareList.get(0).getCenterX();
+        avatarY = squareList.get(0).getCenterY();
+        world[avatarX][avatarY] = Tileset.AVATAR;
+        lightList.add(new Light(avatarX, avatarY));
+        distances[avatarX][avatarY] = 0;
 
         /*将出口door放在最后一个room的中心*/
         int size = squareList.size();
@@ -211,77 +220,118 @@ public class World {
                 if (world[lx][ly] == Tileset.FLOOR_4) {
                     world[lx][ly] = Tileset.LIGHT_ON;
                     setYet = true;
+                    //方便后续距离计算
+                    lightList.add(new Light(lx, ly));
+                    distances[lx][ly] = 0;
                 }
             }
-            lightUp(lx, ly); //让每个灯旁边一圈亮起来！
         }
     }
 
-    /*将avatar和light周围的FLOOR_4点亮*/
-    private void lightUp(int x, int y) {
-        /*FLOOR_1*/
-        for (int i = 0; i < 2; i ++) {
-            if (world[x - 1][y - 1 + i] == Tileset.FLOOR_4) {
-                world[x - 1][y - 1 + i] = Tileset.FLOOR_1;
-            }
-            if (world[x + 1][y + i] == Tileset.FLOOR_4) {
-                world[x + 1][y + i] = Tileset.FLOOR_1;
-            }
-            if (world[x - 1 + i][y + 1] == Tileset.FLOOR_4) {
-                world[x - 1 + i][y + 1] = Tileset.FLOOR_1;
-            }
-            if (world[x + i][y - 1] == Tileset.FLOOR_4) {
-                world[x + i][y - 1] = Tileset.FLOOR_1;
-            }
-        }
-
-        /*FLOOR_2*/
-        for (int i = 0; i < 4; i ++) {
-            if (world[x - 2][y - 1 + i] == Tileset.FLOOR_4) {
-                world[x - 2][y - 1 + i] = Tileset.FLOOR_2;
-            }
-            if (world[x + 2][y - 2 + i] == Tileset.FLOOR_4) {
-                world[x + 2][y - 2 + i] = Tileset.FLOOR_2;
-            }
-            if (world[x - 2 + i][y - 2] == Tileset.FLOOR_4) {
-                world[x - 2 + i][y - 2] = Tileset.FLOOR_2;
-            }
-            if (world[x - 1 + i][y + 2] == Tileset.FLOOR_4) {
-                world[x - 1 + i][y + 2] = Tileset.FLOOR_2;
-            }
-        }
-
-        /*FLOOR_3*/
-        for (int i = 0; i < 6; i++) {
-            if (world[x - 3][y - 2 + i] == Tileset.FLOOR_4) {
-                world[x - 3][y - 2 + i] = Tileset.FLOOR_3;
-            }
-            if (world[x + 3][y - 3 + i] == Tileset.FLOOR_4) {
-                world[x + 3][y - 3 + i] = Tileset.FLOOR_3;
-            }
-            if (world[x - 3 + i][y - 3] == Tileset.FLOOR_4) {
-                world[x - 3 + i][y - 3] = Tileset.FLOOR_3;
-            }
-            if (world[x - 2 + i][y + 3] == Tileset.FLOOR_4) {
-                world[x - 2 + i][y + 3] = Tileset.FLOOR_3;
-            }
+    /*创建一个Light类来存所有光源的坐标*/
+    private class Light {
+        int x, y;
+        public Light(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
     }
 
-    /*生成明亮（默认）或者黑暗的世界，用于ter的渲染*/
-    /*
-    public TETile[][] renderWorld(boolean lightOn, int playerX, int playerY) {
-        TETile[][] renderWorld = TETile.copyOf(world);
+    /*生成明亮或者黑暗的世界，用于ter的渲染*/
+
+    public TETile[][] renderWorld(boolean lightOn) {
+        TETile[][] renderLightWorld = TETile.copyOf(world);
+        TETile[][] renderDarkWorld = TETile.copyOf(world);
+
 
         if (lightOn) {
-            return  renderWorld;
+            int[][] lightDistance = calculateLightBFS();
+            for (int i = 0; i < WIDTH; i++) {
+                for (int j = 0; j < HEIGHT; j++) {
+                    if ((lightDistance[i][j] == 1) && (world[i][j] == Tileset.FLOOR_4)) {
+                        renderLightWorld[i][j] = Tileset.FLOOR_1;
+                    }
+                    if ((lightDistance[i][j] == 2) && (world[i][j] == Tileset.FLOOR_4)) {
+                        renderLightWorld[i][j] = Tileset.FLOOR_2;
+                    }
+                    if ((lightDistance[i][j] == 3) && (world[i][j] == Tileset.FLOOR_4)) {
+                        renderLightWorld[i][j] = Tileset.FLOOR_3;
+                    }
+                }
+            }
+            return renderLightWorld;
         }
 
-        int[][] avatarDistance = calculateAvatarBFS(playerX, playerY);
+        /*生成darkWorld*/
+        int[][] avatarDistance = calculateAvatarBFS();
 
+        return renderDarkWorld;
     }
 
-    private int[][] calculateAvatarBFS(int px, int py) {
+    /*用于黑暗世界。entity也要变！输出一个对于黑暗世界的distances*/
+    private int[][] calculateAvatarBFS() {
+        int[][] avatarDistance = new int[WIDTH][HEIGHT];
+        Queue<Light> lightQueue = new ArrayDeque<>();
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                avatarDistance[i][j] = 999;
+            }
+        }
+        avatarDistance[avatarX][avatarY] = 0;
+        lightQueue.add(new Light(avatarX, avatarY));
 
-    }*/
+        int[] dx = {-1, -1, -1, 0, 0, 1, 1, 1};
+        int[] dy = {1, 0, -1, 1, -1, 1, 0, -1};
+
+        while (!lightQueue.isEmpty()) {
+            Light l1 = lightQueue.poll();
+            int x = l1.x;
+            int y = l1.y;
+
+            for (int k = 0; k < 8; k++) {
+                int x1 = x + dx[k];
+                int y1 = y + dy[k];
+                if ((x1 >= 0) && (x1 <= WIDTH - 1) && (y1 >= 0) && (y1 <= HEIGHT - 1) && (world[x1][y1] != Tileset.WALL) && (avatarDistance[x1][y1] > avatarDistance[x][y] + 1)) {
+                    avatarDistance[x1][y1] = avatarDistance[x][y] + 1;
+                    lightQueue.offer(new Light(x1, y1));
+                }
+            }
+        }
+
+        return avatarDistance;
+    }
+
+    /*是需要根据distances对tile进行操作就行。输出的是一个新的，用于明亮世界的distances*/
+    private int[][] calculateLightBFS() {
+        int[][] lightDistance = new int[WIDTH][HEIGHT];
+        Queue<Light> lightQueue = new ArrayDeque<>();
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                lightDistance[i][j] = distances[i][j];
+                if (distances[i][j] == 0) {
+                    lightQueue.add(new Light(i, j));
+                }
+            }
+        }
+
+        int[] dx = {-1, -1, -1, 0, 0, 1, 1, 1};
+        int[] dy = {1, 0, -1, 1, -1, 1, 0, -1};
+
+        while (!lightQueue.isEmpty()) {
+            Light l1 = lightQueue.poll();
+            int x = l1.x;
+            int y = l1.y;
+
+            for (int k = 0; k < 8; k++) {
+                int x1 = x + dx[k];
+                int y1 = y + dy[k];
+                if ((x1 >= 0) && (x1 <= WIDTH - 1) && (y1 >= 0) && (y1 <= HEIGHT - 1) && (world[x1][y1] != Tileset.WALL) && (lightDistance[x1][y1] > lightDistance[x][y] + 1)) {
+                    lightDistance[x1][y1] = lightDistance[x][y] + 1;
+                    lightQueue.offer(new Light(x1, y1));
+                }
+            }
+        }
+
+        return lightDistance;
+    }
 }
