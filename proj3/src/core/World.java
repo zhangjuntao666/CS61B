@@ -264,7 +264,39 @@ public class World {
 
         /*生成darkWorld*/
         int[][] avatarDistance = calculateAvatarBFS();
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                if ((avatarDistance[i][j] == 1) && (world[i][j] == Tileset.FLOOR_4)) {
+                    renderDarkWorld[i][j] = Tileset.FLOOR_1;
+                }
+                if ((avatarDistance[i][j] == 2) && (world[i][j] == Tileset.FLOOR_4)) {
+                    renderDarkWorld[i][j] = Tileset.FLOOR_2;
+                }
+                if ((avatarDistance[i][j] == 3) && (world[i][j] == Tileset.FLOOR_4)) {
+                    renderDarkWorld[i][j] = Tileset.FLOOR_3;
+                }
+                if (world[i][j] == Tileset.LIGHT_ON) {
+                    renderDarkWorld[i][j] = Tileset.LIGHT_OFF;
+                }
+                if (world[i][j] == Tileset.POTION) {
+                    if (avatarDistance[i][j] > 5) {
+                        renderDarkWorld[i][j] = Tileset.POTION_DARK;
+                    }
+                }
+                if (world[i][j] == Tileset.SPIKE) {
+                    if (avatarDistance[i][j] > 5) {
+                        renderDarkWorld[i][j] = Tileset.SPIKE_DARK;
+                    }
+                }
+                if (world[i][j] == Tileset.DOOR) {
+                    if (avatarDistance[i][j] > 5) {
+                        renderDarkWorld[i][j] = Tileset.DOOR_DARK;
+                    }
+                }
+            }
 
+
+        }
         return renderDarkWorld;
     }
 

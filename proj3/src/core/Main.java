@@ -12,7 +12,7 @@ public class Main {
         ter.initialize(World.WIDTH, World.HEIGHT + hudHeight);
 
         /*catch from user*/
-        long seed = 1997;
+        long seed = 1990;
         World world = new World(seed);
 
         boolean lightOn = true;
