@@ -15,9 +15,9 @@ public class Main {
         long seed = 1990;
         World world = new World(seed);
 
-        boolean lightOn = true;
+        world.lightOn = true;
 
-        TETile[][] renderWorld = world.renderWorld(lightOn);
+        TETile[][] renderWorld = world.renderWorld();
 
         ter.renderFrame(renderWorld);
 

@@ -14,6 +14,13 @@ public class World {
     private long seed;
     private Random rand;
 
+    public int health = 3;
+    public boolean isWin = false;
+    public boolean isOver = false;
+    public int step = 0;
+    public int coins = 0;
+    public boolean lightOn = true;
+
     public TETile[][] world;
     private List<Square> squareList = new ArrayList<>();
     public int avatarX;
@@ -239,7 +246,7 @@ public class World {
 
     /*生成明亮或者黑暗的世界，用于ter的渲染*/
 
-    public TETile[][] renderWorld(boolean lightOn) {
+    public TETile[][] renderWorld() {
         TETile[][] renderLightWorld = TETile.copyOf(world);
         TETile[][] renderDarkWorld = TETile.copyOf(world);
 
@@ -365,5 +372,79 @@ public class World {
         }
 
         return lightDistance;
+    }
+
+    public void moveAvatar(int dx, int dy) {
+        if (isOver || isWin) {
+            return ;
+        }
+
+        int newX = avatarX + dx;
+        int newY = avatarY + dy;
+
+        if (newX >= 0 && newX < WIDTH && newY >= 0 && newY < HEIGHT) {
+            TETile target = world[newX][newY];
+
+            if (target == Tileset.WALL || target == Tileset.WALL_DARK || target == Tileset.NOTHING) {
+                return ;
+            }
+
+            if (target == Tileset.COIN) {
+                coins ++;
+            } else if (target == Tileset.POTION || target == Tileset.POTION_DARK) {
+                if (health < 3) {
+                    health ++;
+                }
+            } else if (target == Tileset.SPIKE || target == Tileset.SPIKE_DARK) {
+                health --;
+                if (health < 0) {
+                    isOver = true;
+                }
+            } else if (target == Tileset.DOOR || target == Tileset.DOOR_DARK) {
+                isWin = true;
+            }
+        }
+
+        world[avatarX][avatarY] = Tileset.FLOOR_4;
+        avatarX = newX;
+        avatarY = newY;
+        world[avatarX][avatarY] = Tileset.AVATAR;
+
+        step ++;
+        if (lightOn) {
+            createSpike();
+        } else {
+            if (step % 3 == 0) {
+                createSpike();
+            }
+        }
+
+        if (step % 5 == 0) {
+            createPotion();
+        }
+    }
+
+    private void createSpike() {
+        int rx, ry;
+        for (int i = 0; i < 50; i++) {
+            rx = RandomUtils.uniform(rand, 0, WIDTH);
+            ry = RandomUtils.uniform(rand, 0, HEIGHT);
+            if (world[rx][ry] == Tileset.FLOOR_4 && (rx != avatarX || ry != avatarY)) {
+                world[rx][ry] = Tileset.SPIKE;
+                return ;
+            }
+        }
+    }
+
+    private void createPotion() {
+        int rx, ry;
+        for (int i = 0; i < 50; i++) {
+            rx = RandomUtils.uniform(rand, 0, WIDTH);
+            ry = RandomUtils.uniform(rand, 0, HEIGHT);
+            if (world[rx][ry] == Tileset.FLOOR_4 && (rx != avatarX || ry != avatarY)) {
+                world[rx][ry] = Tileset.POTION;
+                return ;
+            }
+        }
     }
 }
