@@ -3,7 +3,6 @@ package core;
 import tileengine.TETile;
 import tileengine.Tileset;
 import utils.RandomUtils;
-
 import java.util.*;
 
 public class World {
@@ -20,6 +19,8 @@ public class World {
     public int step = 0;
     public int coins = 0;
     public boolean lightOn = true;
+    public StringBuilder history = new StringBuilder(); //用来存SEED和用户的所有有效按键
+    private TETile underAvatar = Tileset.FLOOR_4;
 
     public TETile[][] world;
     private List<Square> squareList = new ArrayList<>();
@@ -53,7 +54,7 @@ public class World {
         }
     }
 
-    /*generate a totally light world based on the seed with FLOOR_5 and WALL, avatar, light_on, potion, spike, coin, door*/
+    /*generate a world based on the seed with light FLOOR_5 and WALL, avatar, light_on, potion, spike, coin, door*/
     private void generateWorld() {
         for (int i =0; i < 100; i++) {
             createSquares();
@@ -245,7 +246,6 @@ public class World {
     }
 
     /*生成明亮或者黑暗的世界，用于ter的渲染*/
-
     public TETile[][] renderWorld() {
         TETile[][] renderLightWorld = TETile.copyOf(world);
         TETile[][] renderDarkWorld = TETile.copyOf(world);
@@ -346,12 +346,21 @@ public class World {
         Queue<Light> lightQueue = new ArrayDeque<>();
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
-                lightDistance[i][j] = distances[i][j];
-                if (distances[i][j] == 0) {
+                lightDistance[i][j] = 999;
+            }
+        }
+
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                if (world[i][j] == Tileset.LIGHT_ON) {
+                    lightDistance[i][j] = distances[i][j];
                     lightQueue.add(new Light(i, j));
                 }
             }
         }
+
+        lightDistance[avatarX][avatarY] = 0;
+        lightQueue.add(new Light(avatarX, avatarY));
 
         int[] dx = {-1, -1, -1, 0, 0, 1, 1, 1};
         int[] dy = {1, 0, -1, 1, -1, 1, 0, -1};
@@ -403,12 +412,17 @@ public class World {
             } else if (target == Tileset.DOOR || target == Tileset.DOOR_DARK) {
                 isWin = true;
             }
-        }
 
-        world[avatarX][avatarY] = Tileset.FLOOR_4;
-        avatarX = newX;
-        avatarY = newY;
-        world[avatarX][avatarY] = Tileset.AVATAR;
+            if (underAvatar == Tileset.LIGHT_OFF || underAvatar == Tileset.LIGHT_ON) {
+                world[avatarX][avatarY] = underAvatar;
+            } else {
+                world[avatarX][avatarY] = Tileset.FLOOR_4;
+            }
+            avatarX = newX;
+            avatarY = newY;
+            underAvatar = target;
+            world[avatarX][avatarY] = Tileset.AVATAR;
+        }
 
         step ++;
         if (lightOn) {
@@ -446,5 +460,17 @@ public class World {
                 return ;
             }
         }
+    }
+
+    public int score() {
+        int score = 0;
+        if (isWin) {
+            score += coins * 10;
+            score += health * 50;
+        }
+        if (isOver) {
+            score = 0;
+        }
+        return score;
     }
 }
