@@ -171,6 +171,13 @@ public class Main {
                 StdDraw.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
                 String stats = "Health: " + world.health + " | Coins: " + world.coins;
                 StdDraw.text(30, World.HEIGHT + 2, stats);
+
+                int mouseX = (int) StdDraw.mouseX();
+                int mouseY = (int) StdDraw.mouseY();
+                String desc = world.getDescription(mouseX, mouseY);
+                StdDraw.setPenColor(StdDraw.WHITE);
+                StdDraw.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
+                StdDraw.textLeft(2, World.HEIGHT + 2, desc);
             }
 
             if (status == gameOver) {

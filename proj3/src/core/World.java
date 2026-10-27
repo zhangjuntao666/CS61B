@@ -481,4 +481,11 @@ public class World {
         }
         return score;
     }
+
+    public String getDescription(int x, int y) {
+        if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) {
+            return "gulagula~";
+        }
+        return world[x][y].description();
+    }
 }

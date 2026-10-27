@@ -43,8 +43,8 @@ public class Tileset {
     public static final TETile DOOR_DARK = new TETile('▢', new Color(0, 80, 80), Color.black, "exit door", 26);
     public static final TETile WALL_DARK = new TETile('#', new Color(60, 30, 30), Color.black, "wall", 27);
 
-    public static final TETile LIGHT_ON = new TETile('*', Color.yellow, Color.black, "opened lamp", 30);
-    public static final TETile LIGHT_OFF = new TETile('o', Color.gray, Color.black, "closed lamp", 31);
+    public static final TETile LIGHT_ON = new TETile('*', Color.yellow, Color.black, "lamp", 30);
+    public static final TETile LIGHT_OFF = new TETile('o', Color.gray, Color.black, "lamp", 31);
 
 
     public static final TETile FLOOR_1 = new TETile('·', Color.white, new Color(120, 120, 120), "floor", 40);
