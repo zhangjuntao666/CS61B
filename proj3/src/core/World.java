@@ -10,6 +10,10 @@ public class World {
     // build your own world!
     public static final int WIDTH = 60;
     public static final int HEIGHT = 40;
+    private static final int coinScore = 10;
+    private static final int healthScore = 50;
+    private static final int spikeStep = 3;
+    private static final int potionStep = 5;
     private long seed;
     private Random rand;
 
@@ -436,12 +440,12 @@ public class World {
         if (lightOn) {
             createSpike();
         } else {
-            if (step % 3 == 0) {
+            if (step % spikeStep == 0) {
                 createSpike();
             }
         }
 
-        if (step % 5 == 0) {
+        if (step % potionStep == 0) {
             createPotion();
         }
     }
@@ -473,8 +477,8 @@ public class World {
     public int score() {
         int score = 0;
         if (isWin) {
-            score += coins * 10;
-            score += health * 50;
+            score += coins * coinScore;
+            score += health * healthScore;
         }
         if (isOver) {
             score = 0;

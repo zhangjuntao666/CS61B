@@ -31,11 +31,11 @@ public class Main {
             if (status == menu) {
                 StdDraw.setPenColor(StdDraw.WHITE);
                 StdDraw.setFont(new Font(Font.MONOSPACED, Font.BOLD, 70));
-                StdDraw.text(30, 30, "Welcome to my world!");
+                StdDraw.text((double) World.WIDTH / 2, (double) World.HEIGHT / 2 + 10, "Welcome to my world!");
                 StdDraw.setFont(new Font(Font.MONOSPACED, Font.BOLD, 50));
-                StdDraw.text(30, 20, "(N) New Game");
-                StdDraw.text(30, 15, "(L) Load Game");
-                StdDraw.text(30, 10, "(Q) Quit Game");
+                StdDraw.text((double) World.WIDTH / 2, (double) World.HEIGHT / 2, "(N) New Game");
+                StdDraw.text((double) World.WIDTH / 2, (double) World.HEIGHT / 2 - 5, "(L) Load Game");
+                StdDraw.text((double) World.WIDTH / 2, (double) World.HEIGHT / 2 - 10, "(Q) Quit Game");
 
                 if (StdDraw.hasNextKeyTyped()) {
                     char c = StdDraw.nextKeyTyped();
@@ -97,9 +97,9 @@ public class Main {
             if (status == seedInput) {
                 StdDraw.setPenColor(StdDraw.WHITE);
                 StdDraw.setFont(new Font(Font.MONOSPACED, Font.BOLD, 50));
-                StdDraw.text(30, 30, "Enter seed followed by S");
+                StdDraw.text((double) World.WIDTH / 2, (double) World.HEIGHT / 2 + 10, "Enter seed followed by S");
                 StdDraw.setPenColor(StdDraw.YELLOW);
-                StdDraw.text(30, 20, seedString);
+                StdDraw.text((double) World.WIDTH / 2, (double) World.HEIGHT / 2, seedString);
 
                 while (StdDraw.hasNextKeyTyped()) {
                     char c = StdDraw.nextKeyTyped();
@@ -170,7 +170,7 @@ public class Main {
                 StdDraw.setPenColor(StdDraw.WHITE);
                 StdDraw.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
                 String stats = "Health: " + world.health + " | Coins: " + world.coins;
-                StdDraw.text(30, World.HEIGHT + 2, stats);
+                StdDraw.text((double) World.WIDTH / 2, World.HEIGHT + 2, stats);
 
                 int mouseX = (int) StdDraw.mouseX();
                 int mouseY = (int) StdDraw.mouseY();
@@ -184,26 +184,26 @@ public class Main {
                 if (world.isWin) {
                     StdDraw.setPenColor(StdDraw.YELLOW);
                     StdDraw.setFont(new Font(Font.MONOSPACED, Font.BOLD, 70));
-                    StdDraw.text(30, 30, "VICTORY!");
+                    StdDraw.text((double) World.WIDTH / 2, (double) World.HEIGHT / 2 + 10, "VICTORY!");
 
                     StdDraw.setPenColor(StdDraw.WHITE);
                     StdDraw.setFont(new Font(Font.MONOSPACED, Font.BOLD, 50));
-                    StdDraw.text(30, 20, "score: " + world.score());
+                    StdDraw.text((double) World.WIDTH / 2, (double) World.HEIGHT / 2, "score: " + world.score());
                 }
 
                 if (world.isOver) {
                     StdDraw.setPenColor(StdDraw.BLUE);
                     StdDraw.setFont(new Font(Font.MONOSPACED, Font.BOLD, 70));
-                    StdDraw.text(30, 30, "LOSE...");
+                    StdDraw.text((double) World.WIDTH / 2, (double) World.HEIGHT / 2 + 10, "LOSE...");
 
                     StdDraw.setPenColor(StdDraw.WHITE);
                     StdDraw.setFont(new Font(Font.MONOSPACED, Font.BOLD, 50));
-                    StdDraw.text(30, 20, "score: " + world.score());
+                    StdDraw.text((double) World.WIDTH / 2, (double) World.HEIGHT / 2, "score: " + world.score());
                 }
 
                 StdDraw.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 30));
-                StdDraw.text(30, 10, "(N) New game");
-                StdDraw.text(30, 8, "(Q) Quit game");
+                StdDraw.text((double) World.WIDTH / 2, (double) World.HEIGHT / 2 - 10, "(N) New game");
+                StdDraw.text((double) World.WIDTH / 2, (double) World.HEIGHT / 2 - 12, "(Q) Quit game");
 
                 if (StdDraw.hasNextKeyTyped()) {
                     char c = StdDraw.nextKeyTyped();
