@@ -5,6 +5,9 @@ import tileengine.TERenderer;
 import tileengine.TETile;
 
 import java.awt.*;
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -43,6 +46,44 @@ public class Main {
                             status = seedInput;
                             break;
                         case 'l':
+                            try {
+                                File file = new File("save.txt");
+                                if (!file.exists()) {
+                                    System.out.println("没有找到文件");
+                                    break;
+                                }
+                                Scanner scanner = new Scanner(file);
+                                long savedSeed = scanner.nextLong();
+                                String savedHistory = scanner.next();
+                                scanner.close();
+
+                                world = new World(savedSeed);
+                                seed = savedSeed;
+                                world.history.append(savedHistory);
+
+                                for (char move : savedHistory.toCharArray()) {
+                                    switch (move) {
+                                        case 'w':
+                                            world.moveAvatar(0, 1);
+                                            break;
+                                        case 's':
+                                            world.moveAvatar(0, -1);
+                                            break;
+                                        case 'a':
+                                            world.moveAvatar(-1, 0);
+                                            break;
+                                        case 'd':
+                                            world.moveAvatar(1, 0);
+                                            break;
+                                        case 'e':
+                                            world.lightOn = !world.lightOn;
+                                            break;
+                                    }
+                                }
+                                status = game;
+                            } catch (Exception e) {
+                                System.out.println("读档失败惹： " + e.getMessage());
+                            }
                             break;
                         case 'q':
                             System.exit(0);
@@ -83,21 +124,38 @@ public class Main {
                     switch (c) {
                         case 'w':
                             world.moveAvatar(0, 1);
+                            world.history.append('w');
                             break;
                         case 's':
                             world.moveAvatar(0, -1);
+                            world.history.append('s');
                             break;
                         case 'a':
                             world.moveAvatar(-1, 0);
+                            world.history.append('a');
                             break;
                         case 'd':
                             world.moveAvatar(1, 0);
+                            world.history.append('d');
                             break;
                         case 'e':
                             world.lightOn = !world.lightOn;
+                            world.history.append('e');
                             break;
                         case 'q':
                             System.exit(0);
+                            break;
+                        case ':':
+                            try {
+                                File file = new File("save.txt");
+                                PrintWriter out = new PrintWriter(file);
+                                out.println(seed);
+                                out.println(world.history.toString());
+                                out.close();
+                            } catch (Exception e) {
+                                System.out.println("保存失败惹： " + e.getMessage());
+                            }
+                            break;
                         default:
                             break;
                     }
@@ -146,7 +204,7 @@ public class Main {
 
                     switch (c) {
                         case 'n':
-                            status = 1;
+                            status = seedInput;
                             seedString = "";
                             break;
                         case 'q':
