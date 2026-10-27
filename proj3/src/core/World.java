@@ -141,12 +141,20 @@ public class World {
         }
         /*wall*/
         for (int i = 0; i < width + 2; i ++) {
-            world[startX + i - 1][startY - 1] = Tileset.WALL;
-            world[startX + i - 1][startY + height] = Tileset.WALL;
+            if (world[startX + i - 1][startY - 1] == Tileset.NOTHING) {
+                world[startX + i - 1][startY - 1] = Tileset.WALL;
+            }
+            if (world[startX + i - 1][startY + height] == Tileset.NOTHING) {
+                world[startX + i - 1][startY + height] = Tileset.WALL;
+            }
         }
         for (int j = 0; j < height + 2; j ++) {
-            world[startX - 1][startY + j - 1] = Tileset.WALL;
-            world[startX + width][startY + j -1] = Tileset.WALL;
+            if (world[startX - 1][startY + j - 1] == Tileset.NOTHING) {
+                world[startX - 1][startY + j - 1] = Tileset.WALL;
+            }
+            if (world[startX + width][startY + j -1] == Tileset.NOTHING) {
+                world[startX + width][startY + j -1] = Tileset.WALL;
+            }
         }
     }
 
