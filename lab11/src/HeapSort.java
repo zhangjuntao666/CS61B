@@ -16,7 +16,13 @@ public class HeapSort {
      * Read through it carefully and try to understand how it works.
      */
     public static void sort(int[] arr) {
-        // TODO: Implement heap sort
+        // 把通过heapify得到的根节点未0的max-heap转化成递增的arr
+        int len = arr.length;
+        heapify(arr);
+        for (int i = 0; i < len - 1; i++) {
+            swap(arr, 0, len - 1 - i);
+            bubbleDown(arr, 0, len - 1 - i);
+        }
     }
 
     /**
@@ -28,7 +34,12 @@ public class HeapSort {
      * Suggested helper method that will make it easier for you to implement heap sort.
      */
     private static void heapify(int[] arr) {
-        // TODO: Implement heapify
+        // 把整个arr看成一个不太对劲的heap，然后对每一个父节点执行bubbleDown
+        // limit是len，保证len - 1作为子节点时也会被考虑
+        int len = arr.length;
+        for (int i = len / 2 - 1; i >= 0; i--) {
+            bubbleDown(arr, i, len);
+        }
     }
 
 
