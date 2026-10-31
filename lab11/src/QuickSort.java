@@ -48,47 +48,31 @@ public class QuickSort {
      */
     private static int[] partition(int[] arr, int start, int end) {
         int[] indexArr = new int[2];
-        //先用≤和>指针找出start
-        int i = start;
-        int j = end;
         int pivot = arr[start];
-        while (i <= j && i <= end) {
-            if (arr[i] <= pivot) {
-                i++;
-                continue;
-            } else if (arr[j] > pivot) {
-                j--;
-                continue;
-            } else if (arr[i] > pivot && arr[j] <= pivot) {
-                int value = arr[i];
-                arr[i] = arr[j];
-                arr[j] = value;
-                i++;
-                j--;
-                continue;
-            }
-        }
-        indexArr[1] = i;
-        //再用<和==指针找出end
-        i = start;
-        j = indexArr[1] - 1;
-        while (i <= j && j >= start) {
+        // 荷兰国旗（三指针）
+        int lt = start; //小于的边界
+        int i = start + 1; //当前的遍历指针
+        int gt = end; //大于的边界
+        while (i <= gt) {
             if (arr[i] < pivot) {
+                swap(arr, i, lt);
                 i++;
-                continue;
-            } else if (arr[j] == pivot) {
-                j--;
-                continue;
-            } else if (arr[i] == pivot && arr[j] < pivot) {
-                int value = arr[i];
-                arr[i] = arr[j];
-                arr[j] = value;
+                lt++;
+            } else if (arr[i] > pivot) {
+                swap(arr, i, gt);
+                gt--;
+            } else {
                 i++;
-                j--;
-                continue;
             }
         }
-        indexArr[0] = j;
+        indexArr[0] = lt - 1;
+        indexArr[1] = gt + 1;
         return indexArr;
     }
-}   
+
+    private static void swap(int[] arr, int i, int j) {
+        int value = arr[i];
+        arr[i] = arr[j];
+        arr[j] = value;
+    }
+}
