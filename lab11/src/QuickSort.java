@@ -9,7 +9,7 @@ public class QuickSort {
      * 2. Recursively call quicksort on each subsection of the modified array.
      */
     public static int[] sort(int[] arr) {
-        quickSort(arr, 0, arr.length);
+        quickSort(arr, 0, arr.length - 1);
         return arr;
     }
 
@@ -21,8 +21,16 @@ public class QuickSort {
      * Helper method for sort: runs quicksort algorithm on array from [start:end)
      */
     private static void quickSort(int[] arr, int start, int end) {
-        // TODO: Implement quicksort
-        
+        int len = arr.length;
+        if (start >= end) {
+            return;
+        } else {
+            int[] indexArr = partition(arr, start, end);
+            int less = indexArr[0];
+            int greater = indexArr[1];
+            quickSort(arr, start, less);
+            quickSort(arr, greater, end);
+        }
     }
 
     /**
@@ -39,7 +47,48 @@ public class QuickSort {
      * Most of the code for quicksort is in this function
      */
     private static int[] partition(int[] arr, int start, int end) {
-        // TODO: Implement partition
-        return null;
+        int[] indexArr = new int[2];
+        //先用≤和>指针找出start
+        int i = start;
+        int j = end;
+        int pivot = arr[start];
+        while (i <= j && i <= end) {
+            if (arr[i] <= pivot) {
+                i++;
+                continue;
+            } else if (arr[j] > pivot) {
+                j--;
+                continue;
+            } else if (arr[i] > pivot && arr[j] <= pivot) {
+                int value = arr[i];
+                arr[i] = arr[j];
+                arr[j] = value;
+                i++;
+                j--;
+                continue;
+            }
+        }
+        indexArr[1] = i;
+        //再用<和==指针找出end
+        i = start;
+        j = indexArr[1] - 1;
+        while (i <= j && j >= start) {
+            if (arr[i] < pivot) {
+                i++;
+                continue;
+            } else if (arr[j] == pivot) {
+                j--;
+                continue;
+            } else if (arr[i] == pivot && arr[j] < pivot) {
+                int value = arr[i];
+                arr[i] = arr[j];
+                arr[j] = value;
+                i++;
+                j--;
+                continue;
+            }
+        }
+        indexArr[0] = j;
+        return indexArr;
     }
 }   
